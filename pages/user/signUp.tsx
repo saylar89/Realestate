@@ -4,6 +4,7 @@ import ReactInputEvent from "../../components/event/type";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 const SignUp = () => {
   const [first, setFirst] = useState("");
@@ -14,6 +15,7 @@ const SignUp = () => {
   const [pass, setPass] = useState("");
   const [users, setUsers] = useState([]);
   const [showForm, setShowForm] = useState(true);
+  const [show, setShow] = useState(false);
 
   const onChangeFirst = (e: ReactInputEvent) => {
     setFirst(e.target.value);
@@ -41,6 +43,11 @@ const SignUp = () => {
       console.log(users);
     }
   }, []);
+
+  const handleClose = () => {
+    setShow(false);
+    setShowForm(false);
+  };
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -110,106 +117,120 @@ const SignUp = () => {
         const sum = [...users, data];
         setUsers(sum);
         localStorage.setItem("user", JSON.stringify(sum));
-        alert("Your account has been created");
         setFirst("");
         setLast("");
         setAge("");
         setPhone("");
         setEmail("");
         setPass("");
-        setShowForm(false);
+        setShow(true);
       });
     } else {
       const sum = [...users, data];
       setUsers(sum);
       localStorage.setItem("user", JSON.stringify(sum));
-      alert("Your account has been created");
       setFirst("");
       setLast("");
       setAge("");
       setPhone("");
       setEmail("");
       setPass("");
-      setShowForm(false);
+      setShow(true);
     }
   };
 
   return (
     <>
       {showForm ? (
-        <Form style={{ width: "50%" }} className="form">
-          <Form.Group controlId="firstname">
-            <Form.Label>Firstname</Form.Label>
-            <Form.Control
-              size="sm"
-              type="text"
-              placeholder="Your firstname"
-              onChange={onChangeFirst}
-              value={first}
-            />
-            <p id="checkFirst" className="error"></p>
-          </Form.Group>
-          <Form.Group controlId="lastname">
-            <Form.Label>Lastname</Form.Label>
-            <Form.Control
-              type="text"
-              size="sm"
-              placeholder="Your lastname"
-              onChange={onChangeLast}
-              value={last}
-            />
-            <p id="checkLast" className="error"></p>
-          </Form.Group>
-          <Form.Group controlId="age">
-            <Form.Label>Age</Form.Label>
-            <Form.Control
-              type="number"
-              size="sm"
-              placeholder="Your age"
-              onChange={onChangeAge}
-              value={age}
-            />
-            <p id="checkAge" className="error"></p>
-          </Form.Group>
-          <Form.Group controlId="email">
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-              type="email"
-              size="sm"
-              placeholder="Your email address"
-              onChange={onChangeEmail}
-              value={email}
-            />
-            <p id="checkEmail" className="error"></p>
-          </Form.Group>
-          <Form.Group controlId="phone">
-            <Form.Label>Phone number</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="Sample: 0912-111-1111"
-              size="sm"
-              onChange={onChangePhone}
-              value={phone}
-            />
-            <p id="checkPhone" className="error"></p>
-          </Form.Group>
-          <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              size="sm"
-              placeholder="Choose a strong password"
-              onChange={onChangePass}
-              value={pass}
-            />
-            <p id="checkPass" className="error"></p>
-          </Form.Group>
-          <Button variant="primary" onClick={onSubmit} type="submit">
-            Submit
-          </Button>
-        </Form>
+        <div>
+          <Form style={{ width: "50%" }} className="form">
+            <Form.Group controlId="firstname">
+              <Form.Label>Firstname</Form.Label>
+              <Form.Control
+                size="sm"
+                type="text"
+                placeholder="Your firstname"
+                onChange={onChangeFirst}
+                value={first}
+              />
+              <p id="checkFirst" className="error"></p>
+            </Form.Group>
+            <Form.Group controlId="lastname">
+              <Form.Label>Lastname</Form.Label>
+              <Form.Control
+                type="text"
+                size="sm"
+                placeholder="Your lastname"
+                onChange={onChangeLast}
+                value={last}
+              />
+              <p id="checkLast" className="error"></p>
+            </Form.Group>
+            <Form.Group controlId="age">
+              <Form.Label>Age</Form.Label>
+              <Form.Control
+                type="number"
+                size="sm"
+                placeholder="Your age"
+                onChange={onChangeAge}
+                value={age}
+              />
+              <p id="checkAge" className="error"></p>
+            </Form.Group>
+            <Form.Group controlId="email">
+              <Form.Label>Email Address</Form.Label>
+              <Form.Control
+                type="email"
+                size="sm"
+                placeholder="Your email address"
+                onChange={onChangeEmail}
+                value={email}
+              />
+              <p id="checkEmail" className="error"></p>
+            </Form.Group>
+            <Form.Group controlId="phone">
+              <Form.Label>Phone number</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Sample: 0912-111-1111"
+                size="sm"
+                onChange={onChangePhone}
+                value={phone}
+              />
+              <p id="checkPhone" className="error"></p>
+            </Form.Group>
+            <Form.Group controlId="password">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                size="sm"
+                placeholder="Choose a strong password"
+                onChange={onChangePass}
+                value={pass}
+              />
+              <p id="checkPass" className="error"></p>
+            </Form.Group>
+            <Button variant="primary" onClick={onSubmit} type="submit">
+              Submit
+            </Button>
+          </Form>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Congratulations</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Your account created successfully</Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
       ) : (
-        <h2>Your account has been created</h2>
+        <div className=" aftersign">
+          <p>Thank you for your registration</p>
+          <p>Please check your email address for confirmation</p>
+        </div>
       )}
     </>
   );
