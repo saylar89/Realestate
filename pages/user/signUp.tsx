@@ -13,6 +13,7 @@ const SignUp = () => {
   const [phone, setPhone] = useState("");
   const [pass, setPass] = useState("");
   const [users, setUsers] = useState([]);
+  const [showForm, setShowForm] = useState(true);
 
   const onChangeFirst = (e: ReactInputEvent) => {
     setFirst(e.target.value);
@@ -37,11 +38,13 @@ const SignUp = () => {
     if (localStorage.getItem("user")) {
       const data = localStorage.getItem("user");
       setUsers(JSON.parse(data));
+      console.log(users);
     }
   }, []);
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
+
     const errorEls: HTMLCollectionOf<Element> =
       document.getElementsByClassName("error");
     for (var i = 0; i < errorEls.length; i++) errorEls[i].innerHTML = "";
@@ -54,110 +57,161 @@ const SignUp = () => {
       password: pass,
     };
 
-    users &&
+    if (
+      validator.isEmpty(data.email) &&
+      validator.isEmpty(data.password) &&
+      validator.isEmpty(data.firstname) &&
+      validator.isEmpty(data.lastname) &&
+      validator.isEmpty(data.age) &&
+      validator.isEmpty(data.phone)
+    ) {
+      document.getElementById("checkEmail").innerHTML = "Please fill in email";
+      document.getElementById("checkFirst").innerHTML =
+        "Please fill in firstname";
+      document.getElementById("checkLast").innerHTML =
+        "Please fill in lastname";
+      document.getElementById("checkAge").innerHTML = "Please fill in age";
+      document.getElementById("checkPhone").innerHTML = "Please fill in phone";
+      document.getElementById("checkPass").innerHTML =
+        "Please fill in password";
+    } else if (validator.isEmpty(data.email)) {
+      document.getElementById("checkEmail").innerHTML = "Please fill in email";
+    } else if (validator.isEmpty(data.password)) {
+      document.getElementById("checkPass").innerHTML =
+        "Please fill in password";
+    } else if (validator.isEmpty(data.firstname)) {
+      document.getElementById("checkFirst").innerHTML =
+        "Please fill in firstname";
+    } else if (validator.isEmpty(data.lastname)) {
+      document.getElementById("checkLast").innerHTML =
+        "Please fill in lastname";
+    } else if (validator.isEmpty(data.age)) {
+      document.getElementById("checkAge").innerHTML = "Please fill in age";
+    } else if (validator.isEmpty(data.phone)) {
+      document.getElementById("checkPhone").innerHTML =
+        "Please fill in phone number";
+    } else if (!validator.isEmail(data.email)) {
+      document.getElementById("checkEmail").innerHTML =
+        "Email address is not valid";
+    } else if (!validator.isStrongPassword(data.password)) {
+      document.getElementById("checkPass").innerHTML =
+        "Your password must contain one uppercase,lowercase,number,symbol and at least 8 character";
+    } else if (!validator.isInt(data.age, { min: 18 })) {
+      document.getElementById("checkAge").innerHTML = "Your age must be +18";
+    } else if (!validator.isMobilePhone(data.phone, "fa-IR")) {
+      document.getElementById("checkPhone").innerHTML =
+        "Phone number is incorrect * Sample: 0912-111-1111";
+    } else if (users.length != 0) {
       users.map((i) => {
-        if (validator.isEmpty(data.email)) {
-          document.getElementById("checkEmail").innerHTML =
-            "Please fill in email";
-        } else if (validator.isEmpty(data.password)) {
-          document.getElementById("checkPass").innerHTML =
-            "Please fill in password";
-        } else if (!validator.isEmail(data.email)) {
-          document.getElementById("checkEmail").innerHTML =
-            "Email address is not valid";
-        } else if (!validator.isStrongPassword(data.password)) {
-          document.getElementById("checkPass").innerHTML =
-            "Your password must contain one uppercase,lowercase,number,symbol and at least 8 character";
-        } else if (!validator.isInt(data.age, { min: 18 })) {
-          document.getElementById("checkAge").innerHTML =
-            "Your age must be +18";
-        } else if (!validator.isMobilePhone(data.phone, "fa-IR")) {
-          document.getElementById("checkPhone").innerHTML =
-            "Phone number is incorrect";
-        } else if (i.email === data.email) {
+        if (i.email === data.email) {
           document.getElementById("checkEmail").innerHTML =
             "that email address is already in use";
-        } else {
-          const sum = [...users, data];
-          setUsers(sum);
-          localStorage.setItem("user", JSON.stringify(sum));
-          alert("Your account has been created");
         }
+        const sum = [...users, data];
+        setUsers(sum);
+        localStorage.setItem("user", JSON.stringify(sum));
+        alert("Your account has been created");
+        setFirst("");
+        setLast("");
+        setAge("");
+        setPhone("");
+        setEmail("");
+        setPass("");
+        setShowForm(false);
       });
+    } else {
+      const sum = [...users, data];
+      setUsers(sum);
+      localStorage.setItem("user", JSON.stringify(sum));
+      alert("Your account has been created");
+      setFirst("");
+      setLast("");
+      setAge("");
+      setPhone("");
+      setEmail("");
+      setPass("");
+      setShowForm(false);
+    }
   };
 
   return (
-    <Form style={{ width: "50%" }} className="form">
-      <Form.Group controlId="firstname">
-        <Form.Label>Firstname</Form.Label>
-        <Form.Control
-          size="sm"
-          type="text"
-          placeholder="Your firstname"
-          onChange={onChangeFirst}
-          value={first}
-        />
-        <p id="checkFirst" className="error"></p>
-      </Form.Group>
-      <Form.Group controlId="lastname">
-        <Form.Label>Lastname</Form.Label>
-        <Form.Control
-          type="text"
-          size="sm"
-          placeholder="Your lastname"
-          onChange={onChangeLast}
-          value={last}
-        />
-        <p id="checkLast" className="error"></p>
-      </Form.Group>
-      <Form.Group controlId="age">
-        <Form.Label>Age</Form.Label>
-        <Form.Control
-          type="number"
-          size="sm"
-          placeholder="Your age"
-          onChange={onChangeAge}
-          value={age}
-        />
-        <p id="checkAge" className="error"></p>
-      </Form.Group>
-      <Form.Group controlId="email">
-        <Form.Label>Email Address</Form.Label>
-        <Form.Control
-          type="email"
-          size="sm"
-          placeholder="Your email address"
-          onChange={onChangeEmail}
-          value={email}
-        />
-        <p id="checkEmail" className="error"></p>
-      </Form.Group>
-      <Form.Group controlId="phone">
-        <Form.Label>Phone number</Form.Label>
-        <Form.Control
-          type="number"
-          placeholder="Sample: 0912-111-1111"
-          size="sm"
-          onChange={onChangePhone}
-          value={phone}
-        />
-        <p id="checkPhone" className="error"></p>
-      </Form.Group>
-      <Form.Group controlId="password">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          type="password"
-          size="sm"
-          placeholder="Choose a strong password"
-          onChange={onChangePass}
-          value={pass}
-        />
-        <p id="checkPass" className="error"></p>
-      </Form.Group>
-      <Button variant="primary" onClick={onSubmit} type="submit">
-        Submit
-      </Button>
-    </Form>
+    <>
+      {showForm ? (
+        <Form style={{ width: "50%" }} className="form">
+          <Form.Group controlId="firstname">
+            <Form.Label>Firstname</Form.Label>
+            <Form.Control
+              size="sm"
+              type="text"
+              placeholder="Your firstname"
+              onChange={onChangeFirst}
+              value={first}
+            />
+            <p id="checkFirst" className="error"></p>
+          </Form.Group>
+          <Form.Group controlId="lastname">
+            <Form.Label>Lastname</Form.Label>
+            <Form.Control
+              type="text"
+              size="sm"
+              placeholder="Your lastname"
+              onChange={onChangeLast}
+              value={last}
+            />
+            <p id="checkLast" className="error"></p>
+          </Form.Group>
+          <Form.Group controlId="age">
+            <Form.Label>Age</Form.Label>
+            <Form.Control
+              type="number"
+              size="sm"
+              placeholder="Your age"
+              onChange={onChangeAge}
+              value={age}
+            />
+            <p id="checkAge" className="error"></p>
+          </Form.Group>
+          <Form.Group controlId="email">
+            <Form.Label>Email Address</Form.Label>
+            <Form.Control
+              type="email"
+              size="sm"
+              placeholder="Your email address"
+              onChange={onChangeEmail}
+              value={email}
+            />
+            <p id="checkEmail" className="error"></p>
+          </Form.Group>
+          <Form.Group controlId="phone">
+            <Form.Label>Phone number</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Sample: 0912-111-1111"
+              size="sm"
+              onChange={onChangePhone}
+              value={phone}
+            />
+            <p id="checkPhone" className="error"></p>
+          </Form.Group>
+          <Form.Group controlId="password">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              size="sm"
+              placeholder="Choose a strong password"
+              onChange={onChangePass}
+              value={pass}
+            />
+            <p id="checkPass" className="error"></p>
+          </Form.Group>
+          <Button variant="primary" onClick={onSubmit} type="submit">
+            Submit
+          </Button>
+        </Form>
+      ) : (
+        <h2>Your account has been created</h2>
+      )}
+    </>
   );
 };
 
