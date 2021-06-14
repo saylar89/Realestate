@@ -4,7 +4,6 @@ import ReactInputEvent from "../../components/event/type";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import styles from "./signUp.module.css";
 
 const SignUp = () => {
   const [first, setFirst] = useState("");
@@ -88,7 +87,7 @@ const SignUp = () => {
   };
 
   return (
-    <Form style={{ width: "50%" }} className={styles.form}>
+    <Form style={{ width: "50%" }} className="form">
       <Form.Group controlId="firstname">
         <Form.Label>Firstname</Form.Label>
         <Form.Control
