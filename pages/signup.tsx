@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FormEvent } from "react";
 import validator from "validator";
-import ReactInputEvent from "../../components/event/type";
+import ReactInputEvent from "../components/event/type";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
