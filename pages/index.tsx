@@ -1,11 +1,5 @@
-import SearchBar from "../components/searchbar";
+import Footer from "../components/footer";
 
 export default function Home() {
-  return (
-    <div>
-      <div>
-        <SearchBar />
-      </div>
-    </div>
-  );
+  return <div>Hello World</div>;
 }
