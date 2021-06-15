@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { v4 as uuidv4 } from "uuid";
 
 const SignUp = () => {
   const [first, setFirst] = useState("");
@@ -55,6 +56,7 @@ const SignUp = () => {
       document.getElementsByClassName("error");
     for (var i = 0; i < errorEls.length; i++) errorEls[i].innerHTML = "";
     const data = {
+      id: uuidv4(),
       firstname: first,
       lastname: last,
       age: age,
