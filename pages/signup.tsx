@@ -40,7 +40,6 @@ const SignUp = () => {
     if (localStorage.getItem("user")) {
       const data = localStorage.getItem("user");
       setUsers(JSON.parse(data));
-      console.log(users);
     }
   }, []);
 
@@ -109,21 +108,25 @@ const SignUp = () => {
       document.getElementById("checkPhone").innerHTML =
         "Phone number is incorrect * Sample: 0912-111-1111";
     } else if (users.length != 0) {
-      users.map((i) => {
+      users.forEach((i) => {
         if (i.email === data.email) {
           document.getElementById("checkEmail").innerHTML =
-            "that email address is already in use";
+            "That email address is already in use";
+        } else if (i.phone === data.phone) {
+          document.getElementById("checkPhone").innerHTML =
+            "That phone number is already in use";
+        } else {
+          const sum = [...users, data];
+          setUsers(sum);
+          localStorage.setItem("user", JSON.stringify(sum));
+          setFirst("");
+          setLast("");
+          setAge("");
+          setPhone("");
+          setEmail("");
+          setPass("");
+          setShow(true);
         }
-        const sum = [...users, data];
-        setUsers(sum);
-        localStorage.setItem("user", JSON.stringify(sum));
-        setFirst("");
-        setLast("");
-        setAge("");
-        setPhone("");
-        setEmail("");
-        setPass("");
-        setShow(true);
       });
     } else {
       const sum = [...users, data];
