@@ -2,6 +2,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Footer from "./footer";
 import Link from "next/link";
+import Image from "next/image";
 
 const name = "[Your Name]";
 export const siteTitle = "Next.js Sample Website";
@@ -11,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div>
       <Navbar bg="dark" variant="dark">
         <Navbar.Brand href="./">
-          <img
+          <Image
             alt=""
             src="/home.svg"
             width="30"
