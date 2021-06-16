@@ -106,6 +106,9 @@ const SignUp = () => {
         "Your password must contain one uppercase,lowercase,number,symbol and at least 8 character";
     } else if (!validator.isInt(data.age, { min: 18 })) {
       document.getElementById("checkAge").innerHTML = "Your age must be +18";
+    } else if (!validator.isInt(data.age, { max: 120 })) {
+      document.getElementById("checkAge").innerHTML =
+        "Your input age is not correct";
     } else if (!validator.isMobilePhone(data.phone, "fa-IR")) {
       document.getElementById("checkPhone").innerHTML =
         "Phone number is incorrect * Sample: 0912-111-1111";
