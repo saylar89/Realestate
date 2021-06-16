@@ -37,6 +37,7 @@ a {
   border-radius: 2px;
   position: absolute;
   left: 50%;
+  top: 50%;
   transform: translate(-50%, -50%);
   border: 5px solid #424242;
   padding: 20px;
@@ -52,4 +53,19 @@ ul li a {
 
 ul li a:hover {
   color: grey;
+}
+
+.middle {
+  min-height: 400px;
+}
+
+.navlink {
+  margin-left: 5px;
+  margin-right: 5px;
+  color: rgb(196, 196, 196);
+}
+
+.navlink:hover {
+  color: rgb(125, 134, 255);
+  text-decoration: none;
 }

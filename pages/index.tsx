@@ -1,13 +1,15 @@
-import Footer from "../components/footer1";
+import Cards from "../components/homepage/card";
+import Carousels from "../components/homepage/carousel";
 
 export default function Home() {
   return (
-    <div>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est temporibus
-      sequi ipsam enim aspernatur? Labore distinctio minima error quam cum sint.
-      Ut amet eaque delectus possimus veritatis odio consequuntur vitae facere
-      fugiat nemo nulla, neque optio labore sunt cumque sequi veniam
-      perspiciatis. Necessitatibus, at officia?
+    <div className="container">
+      <Carousels />
+      <br />
+      <br />
+      <div>
+        <Cards />
+      </div>
     </div>
   );
 }

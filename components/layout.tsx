@@ -21,16 +21,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           />{" "}
         </Navbar.Brand>
         <Nav className="mr-auto">
-          <Nav.Link href="#buy">Buy</Nav.Link>
-          <Nav.Link href="#sell">Sell</Nav.Link>
-          <Nav.Link href="#rent">Rent</Nav.Link>
+          <Link href="#buy">
+            <a className="navlink">Buy</a>
+          </Link>
+          <Link href="#sell">
+            <a className="navlink">Sell</a>
+          </Link>
+          <Link href="#rent">
+            <a className="navlink">Rent</a>
+          </Link>
         </Nav>
         <Nav>
-          <Nav.Link href="../signup">Log in </Nav.Link>
-          <Nav.Link href="../signup">Sign up</Nav.Link>
+          <Link href="../signup">
+            <a className="navlink"> Log in</a>
+          </Link>
+          <Link href="../signup">
+            <a className="navlink">Sign up</a>
+          </Link>
         </Nav>
       </Navbar>
-      {children}
+      <div className="middle">{children}</div>
       <div>
         <Footer />
       </div>
