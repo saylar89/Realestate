@@ -1,6 +1,7 @@
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Footer from "./footer";
+import Link from "next/link";
 
 const name = "[Your Name]";
 export const siteTitle = "Next.js Sample Website";
@@ -9,7 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="./">
           <img
             alt=""
             src="/home.svg"
@@ -29,7 +30,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </Nav>
       </Navbar>
       {children}
-      <Footer />
+      <div>
+        <Footer />
+      </div>
     </div>
   );
 }
