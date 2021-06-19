@@ -3,6 +3,7 @@ import { IOwner } from "../../interfaces/user/owner";
 
 class Customer extends User implements IOwner {
   id: string;
+  firstName: string;
   lastName: string;
   age: string;
   email: string;

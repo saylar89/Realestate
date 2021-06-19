@@ -3,6 +3,7 @@ import { User } from "./user";
 
 class Customer extends User implements ICustomer {
   id: string;
+  firstName: string;
   lastName: string;
   age: string;
   email: string;
