@@ -34,13 +34,13 @@ const Layout: React.FC<LayoutProps> = ({ pageTitle, children }) => {
           </Link>
         </Navbar.Brand>
         <Nav className="mr-auto">
-          <Link href="#buy">
+          <Link href="./buy">
             <a className="navlink">Buy</a>
           </Link>
-          <Link href="#sell">
+          <Link href="./sell">
             <a className="navlink">Sell</a>
           </Link>
-          <Link href="#rent">
+          <Link href="./rent">
             <a className="navlink">Rent</a>
           </Link>
         </Nav>
