@@ -4,7 +4,7 @@ import { User } from "./user";
 class Customer extends User implements ICustomer {
   id: string;
   lastName: string;
-  age: number;
+  age: string;
   email: string;
   phone: string;
   budget: string;
@@ -14,7 +14,7 @@ class Customer extends User implements ICustomer {
     _id: string,
     _firstName: string,
     _lastName: string,
-    _age: number,
+    _age: string,
     _email: string,
     _phone: string,
     _budget: string,

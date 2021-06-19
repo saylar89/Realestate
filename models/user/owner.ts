@@ -1,11 +1,10 @@
 import { User } from "./user";
-import { IUser } from "../interfaces/user";
-import { IOwner } from "../interfaces/owner";
+import { IOwner } from "../../interfaces/user/owner";
 
 class Customer extends User implements IOwner {
   id: string;
   lastName: string;
-  age: number;
+  age: string;
   email: string;
   phone: string;
   price: string;
@@ -17,7 +16,7 @@ class Customer extends User implements IOwner {
     _id: string,
     _firstName: string,
     _lastName: string,
-    _age: number,
+    _age: string,
     _email: string,
     _phone: string,
     _price: string,
