@@ -16,7 +16,7 @@ const SearchBar = () => {
   useEffect(() => {
     if (localStorage.getItem("user")) {
       const data = localStorage.getItem("user");
-      setTexts(JSON.parse(data));
+      setTexts(JSON.parse(data!));
     }
   }, []);
 
