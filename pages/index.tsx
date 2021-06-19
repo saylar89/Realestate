@@ -4,7 +4,6 @@ import Carousels from "../components/homepage/carousel";
 export default function Home() {
   return (
     <div className="container">
-      <Carousels />
       <br />
       <br />
       <div>

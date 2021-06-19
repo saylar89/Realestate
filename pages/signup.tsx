@@ -6,23 +6,24 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { v4 as uuidv4 } from "uuid";
+import { IUser } from "../interfaces/user/user";
 
 const SignUp = () => {
-  const [first, setFirst] = useState("");
-  const [last, setLast] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [pass, setPass] = useState("");
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<IUser[]>([]);
   const [showForm, setShowForm] = useState(true);
-  const [show, setShow] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const onChangeFirst = (e: ReactInputEvent) => {
-    setFirst(e.target.value);
+    setFirstName(e.target.value);
   };
   const onChangeLast = (e: ReactInputEvent) => {
-    setLast(e.target.value);
+    setLastName(e.target.value);
   };
   const onChangeAge = (e: ReactInputEvent) => {
     setAge(e.target.value);
@@ -40,12 +41,13 @@ const SignUp = () => {
   useEffect(() => {
     if (localStorage.getItem("user")) {
       const data = localStorage.getItem("user");
-      setUsers(JSON.parse(data));
+      const usersList: IUser[] = JSON.parse(data!);
+      setUsers(usersList);
     }
   }, []);
 
   const handleClose = () => {
-    setShow(false);
+    setShowSuccessMessage(false);
     setShowForm(false);
   };
 
@@ -55,10 +57,10 @@ const SignUp = () => {
     const errorEls: HTMLCollectionOf<Element> =
       document.getElementsByClassName("error");
     for (var i = 0; i < errorEls.length; i++) errorEls[i].innerHTML = "";
-    const data = {
+    const user: IUser = {
       id: uuidv4(),
-      firstname: first,
-      lastname: last,
+      firstName: firstName,
+      lastName: lastName,
       age: age,
       email,
       phone,
@@ -66,84 +68,84 @@ const SignUp = () => {
     };
 
     if (
-      validator.isEmpty(data.email) &&
-      validator.isEmpty(data.password) &&
-      validator.isEmpty(data.firstname) &&
-      validator.isEmpty(data.lastname) &&
-      validator.isEmpty(data.age) &&
-      validator.isEmpty(data.phone)
+      validator.isEmpty(user.email) &&
+      validator.isEmpty(user.password) &&
+      validator.isEmpty(user.firstName) &&
+      validator.isEmpty(user.lastName) &&
+      validator.isEmpty(user.age) &&
+      validator.isEmpty(user.phone)
     ) {
-      document.getElementById("checkEmail").innerHTML = "Please fill in email";
-      document.getElementById("checkFirst").innerHTML =
+      document.getElementById("checkEmail")!.innerHTML = "Please fill in email";
+      document.getElementById("checkFirst")!.innerHTML =
         "Please fill in firstname";
-      document.getElementById("checkLast").innerHTML =
+      document.getElementById("checkLast")!.innerHTML =
         "Please fill in lastname";
-      document.getElementById("checkAge").innerHTML = "Please fill in age";
-      document.getElementById("checkPhone").innerHTML = "Please fill in phone";
-      document.getElementById("checkPass").innerHTML =
+      document.getElementById("checkAge")!.innerHTML = "Please fill in age";
+      document.getElementById("checkPhone")!.innerHTML = "Please fill in phone";
+      document.getElementById("checkPass")!.innerHTML =
         "Please fill in password";
-    } else if (validator.isEmpty(data.email)) {
-      document.getElementById("checkEmail").innerHTML = "Please fill in email";
-    } else if (validator.isEmpty(data.password)) {
-      document.getElementById("checkPass").innerHTML =
+    } else if (validator.isEmpty(user.email)) {
+      document.getElementById("checkEmail")!.innerHTML = "Please fill in email";
+    } else if (validator.isEmpty(user.password)) {
+      document.getElementById("checkPass")!.innerHTML =
         "Please fill in password";
-    } else if (validator.isEmpty(data.firstname)) {
-      document.getElementById("checkFirst").innerHTML =
+    } else if (validator.isEmpty(user.firstName)) {
+      document.getElementById("checkFirst")!.innerHTML =
         "Please fill in firstname";
-    } else if (validator.isEmpty(data.lastname)) {
-      document.getElementById("checkLast").innerHTML =
+    } else if (validator.isEmpty(user.lastName)) {
+      document.getElementById("checkLast")!.innerHTML =
         "Please fill in lastname";
-    } else if (validator.isEmpty(data.age)) {
-      document.getElementById("checkAge").innerHTML = "Please fill in age";
-    } else if (validator.isEmpty(data.phone)) {
-      document.getElementById("checkPhone").innerHTML =
+    } else if (validator.isEmpty(user.age)) {
+      document.getElementById("checkAge")!.innerHTML = "Please fill in age";
+    } else if (validator.isEmpty(user.phone)) {
+      document.getElementById("checkPhone")!.innerHTML =
         "Please fill in phone number";
-    } else if (!validator.isEmail(data.email)) {
-      document.getElementById("checkEmail").innerHTML =
+    } else if (!validator.isEmail(user.email)) {
+      document.getElementById("checkEmail")!.innerHTML =
         "Email address is not valid";
-    } else if (!validator.isStrongPassword(data.password)) {
-      document.getElementById("checkPass").innerHTML =
+    } else if (!validator.isStrongPassword(user.password)) {
+      document.getElementById("checkPass")!.innerHTML =
         "Your password must contain one uppercase,lowercase,number,symbol and at least 8 character";
-    } else if (!validator.isInt(data.age, { min: 18 })) {
-      document.getElementById("checkAge").innerHTML = "Your age must be +18";
-    } else if (!validator.isInt(data.age, { max: 120 })) {
-      document.getElementById("checkAge").innerHTML =
+    } else if (!validator.isInt(user.age, { min: 18 })) {
+      document.getElementById("checkAge")!.innerHTML = "Your age must be +18";
+    } else if (!validator.isInt(user.age, { max: 120 })) {
+      document.getElementById("checkAge")!.innerHTML =
         "Your input age is not correct";
-    } else if (!validator.isMobilePhone(data.phone, "fa-IR")) {
-      document.getElementById("checkPhone").innerHTML =
+    } else if (!validator.isMobilePhone(user.phone, "fa-IR")) {
+      document.getElementById("checkPhone")!.innerHTML =
         "Phone number is incorrect * Sample: 0912-111-1111";
     } else if (users.length != 0) {
       users.forEach((i) => {
-        if (i.email === data.email) {
-          document.getElementById("checkEmail").innerHTML =
+        if (i.email === user.email) {
+          document.getElementById("checkEmail")!.innerHTML =
             "That email address is already in use";
-        } else if (i.phone === data.phone) {
-          document.getElementById("checkPhone").innerHTML =
+        } else if (i.phone === user.phone) {
+          document.getElementById("checkPhone")!.innerHTML =
             "That phone number is already in use";
         } else {
-          const sum = [...users, data];
-          setUsers(sum);
-          localStorage.setItem("user", JSON.stringify(sum));
-          setFirst("");
-          setLast("");
+          const usersArray: IUser[] = [...users, user];
+          setUsers(usersArray);
+          localStorage.setItem("user", JSON.stringify(usersArray));
+          setFirstName("");
+          setLastName("");
           setAge("");
           setPhone("");
           setEmail("");
           setPass("");
-          setShow(true);
+          setShowSuccessMessage(true);
         }
       });
     } else {
-      const sum = [...users, data];
-      setUsers(sum);
-      localStorage.setItem("user", JSON.stringify(sum));
-      setFirst("");
-      setLast("");
+      const usersArray = [...users, user];
+      setUsers(usersArray);
+      localStorage.setItem("user", JSON.stringify(usersArray));
+      setFirstName("");
+      setLastName("");
       setAge("");
       setPhone("");
       setEmail("");
       setPass("");
-      setShow(true);
+      setShowSuccessMessage(true);
     }
   };
 
@@ -159,7 +161,7 @@ const SignUp = () => {
                 type="text"
                 placeholder="Your firstname"
                 onChange={onChangeFirst}
-                value={first}
+                value={firstName}
               />
               <p id="checkFirst" className="error"></p>
             </Form.Group>
@@ -170,7 +172,7 @@ const SignUp = () => {
                 size="sm"
                 placeholder="Your lastname"
                 onChange={onChangeLast}
-                value={last}
+                value={lastName}
               />
               <p id="checkLast" className="error"></p>
             </Form.Group>
@@ -222,7 +224,7 @@ const SignUp = () => {
               Submit
             </Button>
           </Form>
-          <Modal show={show} onHide={handleClose}>
+          <Modal show={showSuccessMessage} onHide={handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Congratulations</Modal.Title>
             </Modal.Header>

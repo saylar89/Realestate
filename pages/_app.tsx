@@ -6,7 +6,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 function App({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
+    <Layout pageTitle="Karmana">
       <Component {...pageProps} />
     </Layout>
   );

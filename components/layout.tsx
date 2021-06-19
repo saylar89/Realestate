@@ -1,24 +1,37 @@
+import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Footer from "./footer";
 import Link from "next/link";
 import Image from "next/image";
+import Head from "next/head";
 
 const name = "[Your Name]";
 export const siteTitle = "Next.js Sample Website";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+interface LayoutProps {
+  pageTitle: string;
+}
+
+const Layout: React.FC<LayoutProps> = ({ pageTitle, children }) => {
   return (
     <div>
+      <Head>
+        <title>{pageTitle}</title>
+      </Head>
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="./">
-          <Image
-            alt=""
-            src="/home.svg"
-            width="30"
-            height="30"
-            className="d-inline-block align-top"
-          />{" "}
+        <Navbar.Brand>
+          <Link href="./">
+            <a>
+              <Image
+                alt=""
+                src="/home.svg"
+                width="30"
+                height="30"
+                className="d-inline-block align-top"
+              />{" "}
+            </a>
+          </Link>
         </Navbar.Brand>
         <Nav className="mr-auto">
           <Link href="#buy">
@@ -46,4 +59,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
     </div>
   );
-}
+};
+
+export default Layout;

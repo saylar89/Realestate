@@ -5,7 +5,7 @@ class User implements IUser {
   id: string;
   firstName: string;
   lastName: string;
-  age: number;
+  age: string;
   email: string;
   phone: string;
   password: string;
@@ -13,7 +13,7 @@ class User implements IUser {
   constructor(
     _firstName: string,
     _lastName: string,
-    _age: number,
+    _age: string,
     _email: string,
     _phone: string,
     _password: string
