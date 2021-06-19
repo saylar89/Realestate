@@ -2,26 +2,20 @@ import { ICustomer } from "../../interfaces/user/customer";
 import { User } from "./user";
 
 class Customer extends User implements ICustomer {
-  id: string;
-  firstName: string;
-  lastName: string;
-  age: string;
-  email: string;
-  phone: string;
   budget: string;
   location: string;
 
   constructor(
-    _id: string,
     _firstName: string,
     _lastName: string,
-    _age: string,
+    _age: number,
     _email: string,
     _phone: string,
+    _password: string,
     _budget: string,
     _location: string
   ) {
-    super(_id, _firstName, _lastName, _age, _email, _phone);
+    super(_firstName, _lastName, _age, _email, _phone, _password);
     this.budget = _budget;
     this.location = _location;
   }

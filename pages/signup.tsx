@@ -61,7 +61,7 @@ const SignUp = () => {
       id: uuidv4(),
       firstName: firstName,
       lastName: lastName,
-      age: age,
+      age: +age,
       email,
       phone,
       password: pass,
@@ -72,7 +72,7 @@ const SignUp = () => {
       validator.isEmpty(user.password) &&
       validator.isEmpty(user.firstName) &&
       validator.isEmpty(user.lastName) &&
-      validator.isEmpty(user.age) &&
+      validator.isEmpty("" + user.age) &&
       validator.isEmpty(user.phone)
     ) {
       document.getElementById("checkEmail")!.innerHTML = "Please fill in email";
@@ -95,7 +95,7 @@ const SignUp = () => {
     } else if (validator.isEmpty(user.lastName)) {
       document.getElementById("checkLast")!.innerHTML =
         "Please fill in lastname";
-    } else if (validator.isEmpty(user.age)) {
+    } else if (validator.isEmpty("" + user.age)) {
       document.getElementById("checkAge")!.innerHTML = "Please fill in age";
     } else if (validator.isEmpty(user.phone)) {
       document.getElementById("checkPhone")!.innerHTML =
@@ -106,9 +106,9 @@ const SignUp = () => {
     } else if (!validator.isStrongPassword(user.password)) {
       document.getElementById("checkPass")!.innerHTML =
         "Your password must contain one uppercase,lowercase,number,symbol and at least 8 character";
-    } else if (!validator.isInt(user.age, { min: 18 })) {
+    } else if (!validator.isInt("" + user.age, { min: 18 })) {
       document.getElementById("checkAge")!.innerHTML = "Your age must be +18";
-    } else if (!validator.isInt(user.age, { max: 120 })) {
+    } else if (!validator.isInt("" + user.age, { max: 120 })) {
       document.getElementById("checkAge")!.innerHTML =
         "Your input age is not correct";
     } else if (!validator.isMobilePhone(user.phone, "fa-IR")) {
