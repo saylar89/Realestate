@@ -23,7 +23,7 @@ const Cards = () => {
         <Card.Body>
           <Card.Title>We do home loans</Card.Title>
           <Card.Text>
-            We'll help you find the right home loan at a great rate. &#39
+            We'll help you find the right home loan at a great rate.
           </Card.Text>
         </Card.Body>
         <Card.Footer>
