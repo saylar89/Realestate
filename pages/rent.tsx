@@ -1,5 +1,11 @@
+import Layout from "../components/layout";
+
 const Rent = () => {
-  return <div>Rent Home</div>;
+  return (
+    <Layout pageTitle="Rent">
+      <div>Rent Home</div>
+    </Layout>
+  );
 };
 
 export default Rent;

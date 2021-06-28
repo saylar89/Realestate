@@ -4,7 +4,7 @@ import SignupForm from "../components/signupform";
 
 const SignUp = () => {
   return (
-    <Layout pageTitle="SignUp">
+    <Layout pageTitle="signup">
       <SignupForm />
     </Layout>
   );

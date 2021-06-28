@@ -1,5 +1,11 @@
+import Layout from "../components/layout";
+
 const Buy = () => {
-  return <div>Buy Home</div>;
+  return (
+    <Layout pageTitle="Buy">
+      <div>Buy Home</div>
+    </Layout>
+  );
 };
 
 export default Buy;

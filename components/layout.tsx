@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import Head from "next/head";
 import Footer from "./footer";
 import Header from "./header";
@@ -6,11 +6,12 @@ import Header from "./header";
 const name = "[Your Name]";
 export const siteTitle = "Next.js Sample Website";
 
-interface LayoutProps {
+interface LayoutProps extends PropsWithChildren<{}> {
   pageTitle: string;
 }
 
-const Layout: React.FC<LayoutProps> = ({ pageTitle, children }) => {
+const Layout = (props: LayoutProps): JSX.Element => {
+  const { pageTitle, children } = props;
   return (
     <div>
       <Head>
