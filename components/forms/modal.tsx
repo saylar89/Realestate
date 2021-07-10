@@ -4,6 +4,8 @@ import Button from "react-bootstrap/Button";
 interface FunctionProp {
   handleClose(): void;
   showSuccessMessage: boolean;
+  title: string;
+  message: string;
 }
 
 const ModalComponent = (props: FunctionProp) => {
@@ -11,9 +13,9 @@ const ModalComponent = (props: FunctionProp) => {
     <div>
       <Modal show={props.showSuccessMessage} onHide={props.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Congratulations</Modal.Title>
+          <Modal.Title>{props.title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Your account created successfully</Modal.Body>
+        <Modal.Body>{props.message}</Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={props.handleClose}>
             Close

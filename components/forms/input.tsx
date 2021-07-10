@@ -11,10 +11,7 @@ const Input = (props: InputProps) => {
   const { label, name, placeholder, ...rest } = props;
   return (
     <div className="mb-3">
-      <label
-        className="form-label text-primary font-weight-bold"
-        htmlFor={name}
-      >
+      <label className="form-label text-dark font-weight-bold" htmlFor={name}>
         {label}
       </label>
       <Field

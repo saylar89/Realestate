@@ -39,6 +39,7 @@ const FormikContainer = () => {
     password: "",
     passwordConfirmation: "",
     gender: "",
+    birthDate: null,
   };
 
   const phoneValidate = /^(\+98|0098|98|0)?9\d{9}$/;
@@ -56,6 +57,7 @@ const FormikContainer = () => {
     phone: Yup.string()
       .required("Required")
       .matches(phoneValidate, "Phone number is invalid - Sample : 09121112222"),
+    birthDate: Yup.date().required("Required").nullable(),
     password: Yup.string().password().required("Required"),
     gender: Yup.string().required("Required"),
     passwordConfirmation: Yup.string().oneOf(
@@ -97,12 +99,12 @@ const FormikContainer = () => {
                       name="lastName"
                       placeholder="Type your lastname"
                     />
-                    <FormikControl
+                    {/* <FormikControl
                       control="radio"
                       label="Gender"
                       name="gender"
                       options={genderOptions}
-                    />
+                    /> */}
                     <FormikControl
                       control="input"
                       type="number"
@@ -110,6 +112,12 @@ const FormikContainer = () => {
                       name="age"
                       placeholder="Enter you age"
                     />
+                    {/* <FormikControl
+                      control="date"
+                      label="Birthday"
+                      name="birthDate"
+                      placeholderText="Choose your birthday"
+                    /> */}
                     <FormikControl
                       control="input"
                       type="email"
@@ -138,6 +146,7 @@ const FormikContainer = () => {
                       name="passwordConfirmation"
                       placeholder="Re-enter your password"
                     />
+
                     <Button variant="primary" type="submit" className="mt-2">
                       Submit
                     </Button>
@@ -150,6 +159,8 @@ const FormikContainer = () => {
           <ModalComponent
             showSuccessMessage={showSuccessMessage}
             handleClose={handleClose}
+            title="Congratulation"
+            message="Your account created successfully"
           />
         </div>
       ) : (
