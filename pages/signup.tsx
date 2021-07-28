@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import Layout from "../components/layout";
-import FormikContainer from "components/forms/formikContainer";
+import Layout from "../components/layout/layout";
+import FormikContainer from "components/forms/signUp/signup";
 
 const SignUp = () => {
   return (

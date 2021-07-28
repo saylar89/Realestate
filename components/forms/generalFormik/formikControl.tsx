@@ -14,6 +14,7 @@ interface FormProps {
   placeholder?: string;
   placeholderText?: string;
   options?: { value: string; key: string }[];
+  tagId?: string;
 }
 
 function FormikControl(props: FormProps) {

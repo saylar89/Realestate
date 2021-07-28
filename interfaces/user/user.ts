@@ -6,6 +6,6 @@ export interface IUser {
   email: string;
   phone: string;
   password: string;
-  gender: string;
-  birthDate: Date | null;
+  gender?: string;
+  birthDate?: Date | null;
 }

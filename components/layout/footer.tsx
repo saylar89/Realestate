@@ -9,7 +9,11 @@ const Footer = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-3 col-sm-6">
-              <h4>Contact Us</h4>
+              <Link href="/contact">
+                <a>
+                  <h4>Contact Us</h4>
+                </a>
+              </Link>
               <ul className="list-unstyled">
                 <li>Kerman, Amirkabir Blvd</li>
                 <li>Email : info@KarmanaGroup.com</li>

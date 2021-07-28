@@ -5,10 +5,11 @@ interface InputProps {
   label: string;
   name: string;
   placeholder?: string;
+  tagId?: string;
 }
 
 const Input = (props: InputProps) => {
-  const { label, name, placeholder, ...rest } = props;
+  const { label, name, placeholder, tagId, ...rest } = props;
   return (
     <div className="mb-3">
       <label className="form-label text-dark font-weight-bold" htmlFor={name}>
@@ -22,8 +23,14 @@ const Input = (props: InputProps) => {
         {...rest}
       />
       <ErrorMessage name={name} component={TextError} />
+      <p id={tagId} className="error"></p>
     </div>
   );
 };
 
 export default Input;
+
+
+
+
+

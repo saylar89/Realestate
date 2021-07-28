@@ -3,33 +3,44 @@ import * as Yup from "yup";
 import YupPassword from "yup-password";
 require("yup-password")(Yup);
 import "yup-phone";
-import { useState } from "react";
+import { IUser } from "interfaces/user/user";
+import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
-import FormikControl from "./formikControl";
-import ModalComponent from "./modal";
+import FormikControl from "../generalFormik/formikControl";
+import ModalComponent from "../generalFormik/modal";
 
-interface UserSignup {
+interface Contact {
   email: string;
-  password: string;
+  textarea: string;
 }
 
-const LogInComp = () => {
+const ContactComp = () => {
   const [showForm, setShowForm] = useState(true);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [userFound, setUserFound] = useState<IUser>();
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      const data = localStorage.getItem("user");
+      const usersList: IUser[] = JSON.parse(data!);
+      setUsers(usersList);
+    }
+  }, []);
 
   const handleClose = () => {
     setShowSuccessMessage(false);
     setShowForm(false);
   };
 
-  const initialValues: UserSignup = {
+  const initialValues: Contact = {
     email: "",
-    password: "",
+    textarea: "",
   };
 
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email format").required("Required"),
-    password: Yup.string().password().required("Required"),
+    textarea: Yup.string().required("Required"),
   });
 
   return (
@@ -39,7 +50,12 @@ const LogInComp = () => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(data: UserSignup, onSubmitProps) => {
+            onSubmit={(data: Contact, onSubmitProps) => {
+              const errorEls: HTMLCollectionOf<Element> =
+                document.getElementsByClassName("error");
+              for (var error = 0; error < errorEls.length; error++)
+                errorEls[error].innerHTML = "";
+
               console.log(data);
               onSubmitProps.resetForm();
               setShowSuccessMessage(true);
@@ -56,14 +72,14 @@ const LogInComp = () => {
                       type="email"
                       label="E-mail"
                       name="email"
+                      tagId="checkEmail"
                       placeholder="Enter your e-mail address"
                     />
                     <FormikControl
-                      control="input"
-                      type="password"
-                      label="Password"
-                      name="password"
-                      placeholder="Enter your password"
+                      control="textarea"
+                      label="Comment"
+                      name="textarea"
+                      placeholder="Type your message"
                     />
                     <Button variant="primary" type="submit" className="mt-2">
                       Submit
@@ -90,4 +106,4 @@ const LogInComp = () => {
   );
 };
 
-export default LogInComp;
+export default ContactComp;

@@ -1,16 +1,15 @@
-import { Formik, Form } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { IUser } from "interfaces/user/user";
 import { v4 as uuidv4 } from "uuid";
 import YupPassword from "yup-password";
-import TextError from "./textError";
+import TextError from "../generalFormik/textError";
 require("yup-password")(Yup);
 import "yup-phone";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
-import FormikControl from "./formikControl";
-import ModalComponent from "./modal";
-
+import FormikControl from "../generalFormik/formikControl";
+import ModalComponent from "../generalFormik/modal";
 interface UserSignup extends IUser {
   passwordConfirmation: string;
 }
@@ -18,12 +17,30 @@ interface UserSignup extends IUser {
 const FormikContainer = () => {
   const [showForm, setShowForm] = useState(true);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [usersEmail, setUsersEmail] = useState<string[]>([]);
+  const [usersPhone, setUsersPhone] = useState<string[]>([]);
 
-  const genderOptions = [
-    { key: "Male", value: "male" },
-    { key: "Female", value: "female" },
-  ];
+  // const genderOptions = [
+  //   { key: "Male", value: "male" },
+  //   { key: "Female", value: "female" },
+  // ];
 
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      const data = localStorage.getItem("user");
+      const usersList: IUser[] = JSON.parse(data!);
+      setUsers(usersList);
+      const userEmail: string[] = [];
+      const userPhone: string[] = [];
+      usersList.forEach((e) => {
+        userEmail.push(e.email, e.phone);
+        userPhone.push(e.phone);
+      });
+      setUsersEmail(userEmail);
+      setUsersPhone(userPhone);
+    }
+  }, []);
   const handleClose = () => {
     setShowSuccessMessage(false);
     setShowForm(false);
@@ -38,8 +55,8 @@ const FormikContainer = () => {
     phone: "",
     password: "",
     passwordConfirmation: "",
-    gender: "",
-    birthDate: null,
+    // gender: "",
+    // birthDate: null,
   };
 
   const phoneValidate = /^(\+98|0098|98|0)?9\d{9}$/;
@@ -57,9 +74,9 @@ const FormikContainer = () => {
     phone: Yup.string()
       .required("Required")
       .matches(phoneValidate, "Phone number is invalid - Sample : 09121112222"),
-    birthDate: Yup.date().required("Required").nullable(),
+    // birthDate: Yup.date().required("Required").nullable(),
     password: Yup.string().password().required("Required"),
-    gender: Yup.string().required("Required"),
+    // gender: Yup.string().required("Required"),
     passwordConfirmation: Yup.string().oneOf(
       [Yup.ref("password"), null],
       "Passwords must match"
@@ -73,10 +90,34 @@ const FormikContainer = () => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(data: IUser, onSubmitProps) => {
-              console.log(data);
-              onSubmitProps.resetForm();
-              setShowSuccessMessage(true);
+            onSubmit={(info: IUser, onSubmitProps) => {
+              const errorEls: HTMLCollectionOf<Element> =
+                document.getElementsByClassName("error");
+              for (var i = 0; i < errorEls.length; i++)
+                errorEls[i].innerHTML = "";
+              if (users.length > 0) {
+                users.forEach((i) => {
+                  if (i.email === info.email) {
+                    document.getElementById("checkEmail")!.innerHTML =
+                      "That email address is already in use";
+                  } else if (i.phone === info.phone) {
+                    document.getElementById("checkPhone")!.innerHTML =
+                      "That phone number is already in use";
+                  } else {
+                    const usersArray: IUser[] = [...users, info];
+                    setUsers(usersArray);
+                    localStorage.setItem("user", JSON.stringify(usersArray));
+                    onSubmitProps.resetForm();
+                    setShowSuccessMessage(true);
+                  }
+                });
+              } else {
+                const usersArray: IUser[] = [...users, info];
+                setUsers(usersArray);
+                localStorage.setItem("user", JSON.stringify(usersArray));
+                onSubmitProps.resetForm();
+                setShowSuccessMessage(true);
+              }
             }}
             validateOnChange={false}
           >
@@ -99,12 +140,6 @@ const FormikContainer = () => {
                       name="lastName"
                       placeholder="Type your lastname"
                     />
-                    {/* <FormikControl
-                      control="radio"
-                      label="Gender"
-                      name="gender"
-                      options={genderOptions}
-                    /> */}
                     <FormikControl
                       control="input"
                       type="number"
@@ -112,24 +147,20 @@ const FormikContainer = () => {
                       name="age"
                       placeholder="Enter you age"
                     />
-                    {/* <FormikControl
-                      control="date"
-                      label="Birthday"
-                      name="birthDate"
-                      placeholderText="Choose your birthday"
-                    /> */}
                     <FormikControl
                       control="input"
                       type="email"
                       label="E-mail"
                       name="email"
+                      tagId="checkEmail"
                       placeholder="Enter your e-mail address"
                     />
                     <FormikControl
                       control="input"
-                      type="number"
+                      type="string"
                       label="Phone Number"
                       name="phone"
+                      tagId="checkPhone"
                       placeholder="Enter a valid phone number"
                     />
                     <FormikControl
@@ -146,7 +177,6 @@ const FormikContainer = () => {
                       name="passwordConfirmation"
                       placeholder="Re-enter your password"
                     />
-
                     <Button variant="primary" type="submit" className="mt-2">
                       Submit
                     </Button>
