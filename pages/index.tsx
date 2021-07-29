@@ -1,4 +1,5 @@
 import Cards from "../components/homepage/card";
+import Carousels from "../components/homepage/carousel";
 import Layout from "../components/layout/layout";
 
 export default function Home() {
@@ -6,6 +7,9 @@ export default function Home() {
     <Layout pageTitle="Home">
       <div className="container">
         <br />
+        <div>
+          <Carousels />
+        </div>
         <br />
         <div>
           <Cards />

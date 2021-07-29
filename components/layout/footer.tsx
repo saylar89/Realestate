@@ -69,28 +69,28 @@ const Footer = () => {
               <h4>Social Media</h4>
               <ul className="list-unstyled">
                 <li>
-                  <Link href="/">
+                  <Link href="https://www.facebook.com">
                     <a>
                       <i className={`bi bi-facebook ${styles.social}`}></i>
                     </a>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/">
+                  <Link href="https://www.instagram.com">
                     <a>
                       <i className="bi bi-instagram "></i>
                     </a>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/">
+                  <Link href="https://www.linkedin.com">
                     <a>
                       <i className="bi bi-linkedin "></i>
                     </a>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/">
+                  <Link href="https://twitter.com">
                     <a>
                       <i className="bi bi-twitter "></i>
                     </a>

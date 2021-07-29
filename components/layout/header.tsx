@@ -30,6 +30,11 @@ const Header = () => {
           <a className="navlink">Rent</a>
         </Link>
       </Nav>
+      <Nav className="mr-auto">
+        <Link href="/">
+          <a className="navbar-brand logo">Karmana Estate</a>
+        </Link>
+      </Nav>
       <Nav>
         <Link href="/logIn">
           <a className="navlink"> Log in</a>

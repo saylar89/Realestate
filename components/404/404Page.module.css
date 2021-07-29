@@ -1,0 +1,11 @@
+.errortemplate {
+  padding: 40px 15px;
+  text-align: center;
+}
+.erroractions {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.erroractions .btn {
+  margin-right: 10px;
+}
