@@ -4,7 +4,11 @@ import Layout from "../components/layout/layout";
 
 export default function Home() {
   return (
-    <Layout pageTitle="Home">
+    <Layout
+      pageTitle="Home"
+      description="description"
+      content="Best place for buy and sell your house"
+    >
       <div className="container">
         <br />
         <div>

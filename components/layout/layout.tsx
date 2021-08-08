@@ -8,14 +8,17 @@ export const siteTitle = "Next.js Sample Website";
 
 interface LayoutProps extends PropsWithChildren<{}> {
   pageTitle: string;
+  description?: string;
+  content?: string;
 }
 
 const Layout = (props: LayoutProps): JSX.Element => {
-  const { pageTitle, children } = props;
+  const { pageTitle, description, content, children } = props;
   return (
     <div>
       <Head>
         <title>KarmanaGroup | {pageTitle}</title>
+        <meta name={description} content={content} />
       </Head>
       <Header />
       <div className="middle">{children}</div>
