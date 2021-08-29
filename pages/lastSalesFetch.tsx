@@ -8,7 +8,7 @@ interface salesType {
   volume: number;
 }
 
-const lastSalesPage = () => {
+const LastSalesPage = () => {
   const [sales, setSales] = useState<salesType[]>();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -55,4 +55,4 @@ const lastSalesPage = () => {
   );
 };
 
-export default lastSalesPage;
+export default LastSalesPage;

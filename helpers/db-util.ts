@@ -6,10 +6,10 @@ type Comment = {
   id?: ObjectId;
 };
 
+const connectionString = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_clustername}.kc77b.mongodb.net/${process.env.mongodb_database}?retryWrites=true&w=majority`;
+
 export const connectDatabase = async () => {
-  const client = await MongoClient.connect(
-    "mongodb+srv://saylar:WRsU64ChToWSL2nc@cluster0.kc77b.mongodb.net/forms?retryWrites=true&w=majority"
-  );
+  const client = await MongoClient.connect(connectionString);
   return client;
 };
 

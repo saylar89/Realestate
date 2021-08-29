@@ -16,7 +16,7 @@ type SaleProp = {
   }[];
 };
 
-const lastSalesPage2 = (props: SaleProp) => {
+const LastSalesPage2 = (props: SaleProp) => {
   const [sales, setSales] = useState<salesType[]>(props.sales);
 
   const { data, error } = useSWR(
@@ -90,4 +90,4 @@ export const getStaticProps: GetStaticProps = async () => {
   return { props: { sales: transformedSales } };
 };
 
-export default lastSalesPage2;
+export default LastSalesPage2;
