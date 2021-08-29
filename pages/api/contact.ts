@@ -46,7 +46,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
       result = await insertDocument(client, "contactUs", newComment);
       newComment._id = result.insertedId;
-      res.status(201).json({ message: "comment added", comment: newComment });
+      res.status(201).json({ message: "Comment added", comment: newComment });
     } catch (error) {
       res.status(500).json({ message: "Inserting comment failed!" });
     }

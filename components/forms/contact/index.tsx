@@ -4,11 +4,10 @@ import YupPassword from "yup-password";
 require("yup-password")(Yup);
 import "yup-phone";
 import { IUser } from "interfaces/user/user";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import FormikControl from "../generalFormik/formikControl";
-import ModalComponent from "../generalFormik/modal";
-import { faCommentSlash } from "@fortawesome/free-solid-svg-icons";
+import NotificationContext from "store/notification-context";
 
 interface Contact {
   email: string;
@@ -22,10 +21,11 @@ interface Comment {
 }
 
 const ContactComp = () => {
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [users, setUsers] = useState<IUser[]>([]);
   const [showComment, setShowComment] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
+
+  const notificationCtx = useContext(NotificationContext);
 
   const showCommentHandler = () => {
     setShowComment((prevState) => !prevState);
@@ -37,10 +37,6 @@ const ContactComp = () => {
         .then((response) => response.json())
         .then((data) => setComments(data.comment));
   }, [showComment]);
-
-  const handleClose = () => {
-    setShowSuccessMessage(false);
-  };
 
   const initialValues: Contact = {
     email: "",
@@ -66,6 +62,12 @@ const ContactComp = () => {
 
             const reqBody = { email: data.email, text: data.textarea };
 
+            notificationCtx.showNotification({
+              title: "Please wait",
+              message: "Submiting your request.",
+              status: "pending",
+            });
+
             fetch("/api/contact", {
               method: "POST",
               body: JSON.stringify(reqBody),
@@ -73,11 +75,31 @@ const ContactComp = () => {
                 "Content-Type": "application/json",
               },
             })
-              .then((response) => response.json())
-              .then((data) => console.log("data", data));
+              .then((response) => {
+                if (response.ok) {
+                  return response.json();
+                }
+
+                return response.json().then((data) => {
+                  throw new Error(data.message || "Something went wrong");
+                });
+              })
+              .then((data) => {
+                notificationCtx.showNotification({
+                  title: "Success!",
+                  message: data.message || "Your comment successfully sent.",
+                  status: "success",
+                });
+              })
+              .catch((error) => {
+                notificationCtx.showNotification({
+                  title: "Error!",
+                  message: error.message || "Something went wrong",
+                  status: "error",
+                });
+              });
 
             onSubmitProps.resetForm();
-            setShowSuccessMessage(true);
           }}
           validateOnChange={false}
         >
@@ -109,12 +131,6 @@ const ContactComp = () => {
             </div>
           </Form>
         </Formik>
-        <ModalComponent
-          showSuccessMessage={showSuccessMessage}
-          handleClose={handleClose}
-          title="Correct email and password"
-          message="You Have Successfully Logged in"
-        />
       </div>
       <div
         style={{
