@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+
 html,
 body {
   height: 100%;
@@ -68,4 +70,8 @@ ul li a:hover {
 .navlink:hover {
   color: rgb(125, 134, 255);
   text-decoration: none;
+}
+
+.logo {
+  font-family: Lobster;
 }
