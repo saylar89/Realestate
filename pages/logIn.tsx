@@ -1,6 +1,7 @@
+import dynamic from "next/dynamic";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Layout from "../components/layout/layout";
-import LogInComp from "../components/forms/logIn/logInComp";
+const Layout = dynamic(() => import("../components/layout/layout"));
+const LogInComp = dynamic(() => import("../components/forms/logIn/logInComp"));
 
 const SignUp = () => {
   return (

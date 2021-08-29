@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import Layout from "../components/layout/layout";
-import FormikContainer from "components/forms/signUp/signup";
+import dynamic from "next/dynamic";
+const Layout = dynamic(() => import("../components/layout/layout"));
+const FormikContainer = dynamic(() => import("components/forms/signUp/signup"));
 
 const SignUp = () => {
   return (

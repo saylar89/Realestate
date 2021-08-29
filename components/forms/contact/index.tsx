@@ -1,9 +1,5 @@
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import YupPassword from "yup-password";
-require("yup-password")(Yup);
-import "yup-phone";
-import { IUser } from "interfaces/user/user";
 import { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import FormikControl from "../generalFormik/formikControl";
@@ -21,7 +17,6 @@ interface Comment {
 }
 
 const ContactComp = () => {
-  const [users, setUsers] = useState<IUser[]>([]);
   const [showComment, setShowComment] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
 

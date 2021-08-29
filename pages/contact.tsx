@@ -1,6 +1,6 @@
-import SecondContact from "components/forms/contact/secondForm";
-import ContactComp from "components/forms/contact";
-import Layout from "components/layout/layout";
+import dynamic from "next/dynamic";
+const ContactComp = dynamic(() => import("components/forms/contact"));
+const Layout = dynamic(() => import("components/layout/layout"));
 
 const ContactUs = () => {
   return (

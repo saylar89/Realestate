@@ -27,7 +27,7 @@ const Rent = ({
   );
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
   const filePath = path.join(process.cwd(), "data", "dummy-data.json");
   const jsonData = await fs.readFile(filePath, "utf-8");
   const data = JSON.parse(jsonData);
