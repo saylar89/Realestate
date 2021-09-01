@@ -5,8 +5,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState } from "react";
 import Head from "next/head";
 import { Fragment } from "react";
-
 import { NotificationContextProvider } from "store/notification-context";
+import { Provider } from "next-auth/client";
 
 function App({ Component, pageProps }: AppProps) {
   useState;
@@ -24,7 +24,9 @@ function App({ Component, pageProps }: AppProps) {
             content="width=device-width, initial-scale=1.0"
           />
         </Head>
-        <Component {...pageProps} />
+        <Provider session={pageProps.session}>
+          <Component {...pageProps} />
+        </Provider>
       </NotificationContextProvider>
     </Fragment>
   );

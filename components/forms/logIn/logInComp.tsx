@@ -1,13 +1,11 @@
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import YupPassword from "yup-password";
-require("yup-password")(Yup);
-import "yup-phone";
-import { IUser } from "interfaces/user/user";
-import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import FormikControl from "../generalFormik/formikControl";
-import ModalComponent from "../generalFormik/modal";
+import NotificationContext from "store/notification-context";
+import { signIn } from "next-auth/client";
+import { useContext } from "react";
+import { useRouter } from "next/router";
 
 interface UserSignup {
   email: string;
@@ -15,23 +13,8 @@ interface UserSignup {
 }
 
 const LogInComp = () => {
-  const [showForm, setShowForm] = useState(true);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [users, setUsers] = useState<IUser[]>([]);
-  const [userFound, setUserFound] = useState<IUser>();
-
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      const data = localStorage.getItem("user");
-      const usersList: IUser[] = JSON.parse(data!);
-      setUsers(usersList);
-    }
-  }, []);
-
-  const handleClose = () => {
-    setShowSuccessMessage(false);
-    setShowForm(false);
-  };
+  const notificationCtx = useContext(NotificationContext);
+  const router = useRouter();
 
   const initialValues: UserSignup = {
     email: "",
@@ -40,91 +23,83 @@ const LogInComp = () => {
 
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email format").required("Required"),
-    password: Yup.string().password().required("Required"),
+    password: Yup.string().required("Required"),
   });
 
   return (
     <div>
-      {showForm ? (
-        <div>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={(data: UserSignup, onSubmitProps) => {
-              const errorEls: HTMLCollectionOf<Element> =
-                document.getElementsByClassName("error");
-              for (var error = 0; error < errorEls.length; error++)
-                errorEls[error].innerHTML = "";
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={async (data: UserSignup, onSubmitProps) => {
+          const { email, password } = data;
+          const errorEls: HTMLCollectionOf<Element> =
+            document.getElementsByClassName("error");
+          for (var error = 0; error < errorEls.length; error++)
+            errorEls[error].innerHTML = "";
 
-              if (users.length > 0) {
-                users.forEach((user) => {
-                  if (user.email === data.email) {
-                    setUserFound(user);
-                    console.log(setUserFound);
-                  }
-                });
-              } else {
-                document.getElementById("checkEmail")!.innerHTML =
-                  "User not found! Please sign up first";
-              }
+          notificationCtx.showNotification({
+            title: "Please wait",
+            message: " logging in...",
+            status: "pending",
+          });
 
-              if (userFound) {
-                if (userFound.password === data.password) {
-                  onSubmitProps.resetForm();
-                  setShowSuccessMessage(true);
-                } else {
-                  document.getElementById("checkPassword")!.innerHTML =
-                    "Your password is incorrect";
-                }
-              } else {
-                document.getElementById("checkEmail")!.innerHTML =
-                  "User not found! Please sign up first";
-              }
-            }}
-            validateOnChange={false}
-          >
-            <Form>
-              <div className="container ">
-                <div className="row">
-                  <div className="col"></div>
-                  <div className="col-6 border rounded border-secondary mt-4 p-3">
-                    <FormikControl
-                      control="input"
-                      type="email"
-                      label="E-mail"
-                      name="email"
-                      tagId="checkEmail"
-                      placeholder="Enter your e-mail address"
-                    />
-                    <FormikControl
-                      control="input"
-                      type="password"
-                      label="Password"
-                      name="password"
-                      tagId="checkPassword"
-                      placeholder="Enter your password"
-                    />
-                    <Button variant="primary" type="submit" className="mt-2">
-                      Submit
-                    </Button>
-                  </div>
-                  <div className="col"></div>
-                </div>
+          const result = await signIn("credentials", {
+            redirect: false,
+            email,
+            password,
+          });
+
+          console.log("result", result);
+
+          if (result!.error) {
+            notificationCtx.showNotification({
+              title: "Error!",
+              message: result!.error || "User not found!",
+              status: "error",
+            });
+          } else {
+            notificationCtx.showNotification({
+              title: "Success!",
+              message: "You are loged in",
+              status: "success",
+            });
+            router.replace("/personalProfile");
+            onSubmitProps.resetForm();
+          }
+        }}
+        validateOnChange={false}
+      >
+        <Form>
+          <div className="container ">
+            <div className="row">
+              <div className="col"></div>
+              <div className="col-6 border rounded border-secondary mt-4 p-3">
+                <FormikControl
+                  control="input"
+                  type="email"
+                  label="E-mail"
+                  name="email"
+                  tagId="checkEmail"
+                  placeholder="Enter your e-mail address"
+                />
+                <FormikControl
+                  control="input"
+                  type="password"
+                  label="Password"
+                  name="password"
+                  tagId="checkPassword"
+                  placeholder="Enter your password"
+                />
+                <Button variant="primary" type="submit" className="mt-2">
+                  Submit
+                </Button>
               </div>
-            </Form>
-          </Formik>
-          <ModalComponent
-            showSuccessMessage={showSuccessMessage}
-            handleClose={handleClose}
-            title="Correct email and password"
-            message="You Have Successfully Logged in"
-          />
-        </div>
-      ) : (
-        <div className=" aftersign">
-          <p>You Have Successfully Logged in</p>
-        </div>
-      )}
+              <div className="col"></div>
+            </div>
+          </div>
+        </Form>
+      </Formik>
     </div>
   );
 };

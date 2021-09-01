@@ -33,7 +33,7 @@ export const NotificationContextProvider = (
     ) {
       const timer = setTimeout(() => {
         setActiveNotification(null);
-      }, 2000);
+      }, 3000);
 
       return () => {
         clearTimeout(timer);

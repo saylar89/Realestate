@@ -1,8 +1,13 @@
 import { MongoClient, ObjectId, Sort } from "mongodb";
 
 type Comment = {
+  firstName?: string;
+  lastName?: string;
+  age?: number;
+  phone?: string;
+  password?: string;
   email: string;
-  text: string;
+  text?: string;
   id?: ObjectId;
 };
 

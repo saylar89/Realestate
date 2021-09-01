@@ -26,7 +26,10 @@ const Layout = (props: LayoutProps): JSX.Element => {
         <meta name={description} content={content} />
       </Head>
       <Header />
-      <div className="middle">{children}</div>
+      <main>
+        <div className="middle">{children}</div>
+      </main>
+
       {activeNotification && (
         <Notification
           title={activeNotification.title}

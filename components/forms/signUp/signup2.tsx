@@ -1,19 +1,56 @@
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { signIn } from "next-auth/client";
 import { IUser } from "interfaces/user/user";
 import { v4 as uuidv4 } from "uuid";
 require("yup-password")(Yup);
-import { useContext } from "react";
+
+import { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import FormikControl from "../generalFormik/formikControl";
 import NotificationContext from "store/notification-context";
+import { useRouter } from "next/router";
+import { ObjectId } from "mongodb";
 
 interface UserSignup extends IUser {
   passwordConfirmation: string;
 }
 
+type UserType = {
+  firstName: string;
+  lastName: string;
+  age: number;
+  email: string;
+  phone: string;
+  password: string;
+  _id?: ObjectId;
+};
+
+async function createUser(userData: UserType) {
+  const response = await fetch("/api/auth/signup2", {
+    method: "POST",
+    body: JSON.stringify(userData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Something went wrong!");
+  }
+
+  return data;
+}
+
 const FormikContainer = () => {
+  const [isLogin, setIsLogin] = useState(false);
+  const router = useRouter();
+
   const notificationCtx = useContext(NotificationContext);
+
+  useEffect(() => {}, []);
 
   const initialValues: UserSignup = {
     id: uuidv4(),
@@ -53,7 +90,7 @@ const FormikContainer = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(info: IUser, onSubmitProps) => {
+        onSubmit={async (info: IUser, onSubmitProps) => {
           const { firstName, lastName, age, email, phone, password } = info;
           const errorEls: HTMLCollectionOf<Element> =
             document.getElementsByClassName("error");
@@ -68,43 +105,33 @@ const FormikContainer = () => {
             password,
           };
 
-          notificationCtx.showNotification({
-            title: "Please wait",
-            message: "Registering...",
-            status: "pending",
-          });
-
-          fetch("/api/auth/signup", {
-            method: "POST",
-            body: JSON.stringify(reqBody),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-            .then((response) => {
-              if (response.ok) {
-                return response.json();
+          if (isLogin) {
+            return;
+          } else {
+            notificationCtx.showNotification({
+              title: "Please wait",
+              message: "Submiting your request.",
+              status: "pending",
+            });
+            try {
+              const result = await createUser(reqBody);
+              if (result) {
+                notificationCtx.showNotification({
+                  title: "Success!",
+                  message: result.message || "You registered successfully.",
+                  status: "success",
+                });
               }
-
-              return response.json().then((data) => {
-                throw new Error(data.message || "Something went wrong");
-              });
-            })
-            .then((data) => {
-              notificationCtx.showNotification({
-                title: "Success!",
-                message: data.message || "You registered successfully.",
-                status: "success",
-              });
-              onSubmitProps.resetForm();
-            })
-            .catch((error) => {
+              console.log("result", result);
+            } catch (error) {
               notificationCtx.showNotification({
                 title: "Error!",
                 message: error.message || "Something went wrong",
                 status: "error",
               });
-            });
+              console.log(error);
+            }
+          }
         }}
         validateOnChange={false}
       >
